@@ -5,14 +5,14 @@
  */
 
 // Reexport styling rule.
-#import "/icml2024.typ": icml2024
-#import "/icml2025.typ": icml2025
+#import "./icml2024.typ": icml2024
+#import "./icml2025.typ": icml2025
 
 // Reexport utility routine.
-#import "/icml2024.typ": vruler
+#import "./icml2024.typ": vruler
 
 // Reexport constants and definitions.
-#import "/icml2024.typ": font
+#import "./icml2024.typ": font
 
 // Tickness values are taken from booktabs.
 #let toprule = table.hline(stroke: (thickness: 0.08em))
@@ -23,14 +23,13 @@
  * Initialize and customize @preview/lemmify package.
  */
 
-#import "@preview/lemmify:0.1.7": (
-  default-theorems, new-theorems, thm-numbering-heading)
+#import "@preview/lemmify:0.1.7": default-theorems, new-theorems, thm-numbering-heading
 
 #let thm-styling(
   thm-type,
   name,
   number,
-  body
+  body,
 ) = block(width: 100%, breakable: true, {
   set align(left)
   let numbering = if number != none {
@@ -38,7 +37,7 @@
   } else {
     "."
   }
-  if thm-type in ("Remark", ) {
+  if thm-type in ("Remark",) {
     emph(thm-type + numbering) + " "
   } else {
     strong(thm-type + numbering) + " "
@@ -54,20 +53,24 @@
 })
 
 #let (
-  corollary, proposition, lemma, theorem, // strong + emph
-  definition,                             // strong + plain
-  remark,                                 // emph + plain
+  corollary,
+  proposition,
+  lemma,
+  theorem, // strong + emph
+  definition, // strong + plain
+  remark, // emph + plain
   proof,
   rules: thm-rule,
-) = default-theorems(
-  "thm-group",
-  thm-styling: thm-styling,
-  thm-numbering: thm-numbering-heading.with(max-heading-level: 1))
+) = default-theorems("thm-group", thm-styling: thm-styling, thm-numbering: thm-numbering-heading.with(
+  max-heading-level: 1,
+))
 
 #let (assumption, rules: thm-rule-aux) = new-theorems(
-  "thm-group", ("assumption": "Assumption"),
+  "thm-group",
+  ("assumption": "Assumption"),
   thm-styling: thm-styling,
-  thm-numbering: thm-numbering-heading.with(max-heading-level: 1))
+  thm-numbering: thm-numbering-heading.with(max-heading-level: 1),
+)
 
 #let lemmify(body) = {
   show: thm-rule

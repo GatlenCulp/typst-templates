@@ -12,23 +12,23 @@
 
 // Default font sizes from original LaTeX style file.
 #let font-defaults = (
-  tiny:	        6pt,
-  scriptsize:   7pt,
+  tiny: 6pt,
+  scriptsize: 7pt,
   footnotesize: 9pt,
-  small:        9pt,
-  normalsize:   10pt,
-  large:        12pt,
-  Large:        14pt,
-  LARGE:        17pt,
-  huge:         20pt,
-  Huge:         25pt,
+  small: 9pt,
+  normalsize: 10pt,
+  large: 12pt,
+  Large: 14pt,
+  LARGE: 17pt,
+  huge: 20pt,
+  Huge: 25pt,
 )
 
 // We prefer to use Times New Roman when ever it is possible.
 #let font-family = ("Times New Roman", "Nimbus Roman", "TeX Gyre Termes")
 
 #let font = (
-  Large: font-defaults.Large + 0.4pt,  // Actual font size.
+  Large: font-defaults.Large + 0.4pt, // Actual font size.
   footnote: font-defaults.footnotesize,
   large: font-defaults.large,
   small: font-defaults.small,
@@ -68,8 +68,7 @@
 
 #let make_figure(caption_above: false, it) = {
   // set align(center + top)
-  place(center + top, float: true,
-  block(breakable: false, width: 100%, {
+  place(center + top, float: true, block(breakable: false, width: 100%, {
     if caption_above {
       it.caption
     }
@@ -85,7 +84,7 @@
 #let anonymous-author = (
   name: "Anonymous Author",
   email: "anon.email@example.org",
-  affl: ("anonymous-affl", ),
+  affl: ("anonymous-affl",),
 )
 
 #let anonymous-affl = (
@@ -123,9 +122,12 @@
 
   // Render author and affilation references to content.
   set text(size: font.normal, weight: "regular")
-  return strong(author.name) + super(typographic: false, [
-    #indices.join(" ")
-  ])
+  return (
+    strong(author.name)
+      + super(typographic: false, [
+        #indices.join(" ")
+      ])
+  )
 }
 
 #let make-affilations-and-notice(authors, affls) = {
@@ -142,33 +144,39 @@
 
   // Prepare list of affilations.
   let ordered-affls = authors.map(it => it.affl).flatten().dedup()
-  let affilations = ordered-affls.enumerate(start: 1).map(pair => {
-    let (ix, it) = pair
-    let affl = affls.at(it, default: none)
-    assert(affl != none, message: "unknown affilation: " + it)
+  let affilations = ordered-affls
+    .enumerate(start: 1)
+    .map(pair => {
+      let (ix, it) = pair
+      let affl = affls.at(it, default: none)
+      assert(affl != none, message: "unknown affilation: " + it)
 
-    // Convert structured affilation representation to plain one (array).
-    if type(affl) == dictionary {
-      let keys = ("department", "institution", "location", "country")
-      let parts = ()
-      for key in keys {
-        let val = affl.at(key, default: none)
-        if val != none {
-          parts.push(val)
+      // Convert structured affilation representation to plain one (array).
+      if type(affl) == dictionary {
+        let keys = ("department", "institution", "location", "country")
+        let parts = ()
+        for key in keys {
+          let val = affl.at(key, default: none)
+          if val != none {
+            parts.push(val)
+          }
         }
+        affl = parts
       }
-      affl = parts
-    }
 
-    // Validate affilation representation.
-    assert(type(affl) == array,
-           message: "wrong affilation type: " + type(affl))
-    assert(affl.len() > 0,
-           message: "empty affilation: " + it + " :" + repr(affl))
+      // Validate affilation representation.
+      assert(
+        type(affl) == array,
+        message: "wrong affilation type: " + type(affl),
+      )
+      assert(
+        affl.len() > 0,
+        message: "empty affilation: " + it + " :" + repr(affl),
+      )
 
-    // Finally, join parts of affilation.
-    return super(str(ix)) + affl.join(", ")
-  })
+      // Finally, join parts of affilation.
+      return super(str(ix)) + affl.join(", ")
+    })
   if affilations != () {
     info.push(affilations.join([ ]) + [.])
   }
@@ -240,8 +248,9 @@
     set text(size: font.small)
     set par(leading: 0.5em, justify: true)
     line(length: 0.8in, stroke: (thickness: 0.05em))
-    block(spacing: 0.45em, width: 100%, {  // Footnote line.
-      h(1.2em)  // BUG: https://github.com/typst/typst/issues/311
+    block(spacing: 0.45em, width: 100%, {
+      // Footnote line.
+      h(1.2em) // BUG: https://github.com/typst/typst/issues/311
       if contrib-info != () {
         contrib-info.join([ ])
         parbreak()
@@ -249,7 +258,7 @@
 
       if accepted == none {
         arxiv-notice
-      } else if accepted  {
+      } else if accepted {
         public-notice
       } else {
         anonymous-notice
@@ -259,11 +268,13 @@
 
   // Prepare authors and footnote anchors.
   let ordered-affls = authors.map(it => it.affl).flatten().dedup()
-  let affl2idx = ordered-affls.enumerate(start: 1).fold((:), (acc, it) => {
-    let (ix, affl) = it
-    acc.insert(affl, ix)
-    return acc
-  })
+  let affl2idx = ordered-affls
+    .enumerate(start: 1)
+    .fold((:), (acc, it) => {
+      let (ix, affl) = it
+      acc.insert(affl, ix)
+      return acc
+    })
   let make-authors() = authors.map(it => make-author(it, affl2idx))
 
   set page(
@@ -272,7 +283,8 @@
       left: 0.75in,
       right: 8.5in - (0.75in + 6.75in),
       top: 1.0in,
-      bottom: 11in - 1in - 9in),
+      bottom: 11in - 1in - 9in,
+    ),
     columns: 2,
     header-ascent: 10pt,
     header: context {
@@ -296,7 +308,7 @@
     footer: context {
       let i = counter(page).get().first()
       align(center, text(size: font.normal, [#i]))
-    }
+    },
   )
   set columns(gutter: 0.25in)
 
@@ -363,21 +375,16 @@
     let eq = math.equation
     let el = it.element
     if el != none and el.func() == eq {
-      let numb = numbering(
-        "1",
-        ..counter(eq).at(el.location())
-      )
-      let color = rgb(0%, 8%, 45%)  // Originally `mydarkblue`. :D
+      let numb = numbering("1", ..counter(eq).at(el.location()))
+      let color = rgb(0%, 8%, 45%) // Originally `mydarkblue`. :D
       let content = link(el.location(), text(fill: color, numb))
       [(#content)]
     } else if el != none and el.func() == heading {
-      let numb = numbering(
-        el.numbering,
-        ..counter(el.func()).at(el.location()))
+      let numb = numbering(el.numbering, ..counter(el.func()).at(el.location()))
       if numb.at(-1) == "." {
         numb = numb.slice(0, -1)
       }
-      let color = rgb(0%, 8%, 45%)  // Originally `mydarkblue`. :D
+      let color = rgb(0%, 8%, 45%) // Originally `mydarkblue`. :D
       let content = text(fill: color, numb)
       // If numbering starts with letter then the heading is an appendix.
       let supplement = el.supplement
@@ -386,13 +393,11 @@
       }
       link(el.location())[#supplement~#content]
     } else if el != none and el.func() == figure {
-      let numb = numbering(
-        el.numbering,
-        ..counter(figure.where(kind: el.kind)).at(el.location()))
+      let numb = numbering(el.numbering, ..counter(figure.where(kind: el.kind)).at(el.location()))
       if numb.at(-1) == "." {
         numb = numb.slice(0, -1)
       }
-      let color = rgb(0%, 8%, 45%)  // Originally `mydarkblue`. :D
+      let color = rgb(0%, 8%, 45%) // Originally `mydarkblue`. :D
       let content = text(fill: color, numb)
       link(el.location())[#el.supplement~#content]
     }
@@ -408,13 +413,13 @@
   })
   show figure.where(kind: "algorithm"): it => {
     let render() = block(breakable: false, width: 100%, {
-        set block(spacing: 0em)
-        line(length: 100%, stroke: (thickness: 0.08em))
-        block(spacing: 0.4em, it.caption)  // NOTE: No idea why we need it.
-        line(length: 100%, stroke: (thickness: 0.05em))
-        it.body
-        line(length: 100%, stroke: (thickness: 0.08em))
-      })
+      set block(spacing: 0em)
+      line(length: 100%, stroke: (thickness: 0.08em))
+      block(spacing: 0.4em, it.caption) // NOTE: No idea why we need it.
+      line(length: 100%, stroke: (thickness: 0.05em))
+      it.body
+      line(length: 100%, stroke: (thickness: 0.08em))
+    })
     if it.placement == none {
       render()
     } else {
@@ -441,9 +446,11 @@
     // Render authors.
     {
       set align(center)
-      make-authors().map(it => {
-        box(inset: (left: 0.5em, right: 0.5em), it)
-      }).join()
+      make-authors()
+        .map(it => {
+          box(inset: (left: 0.5em, right: 0.5em), it)
+        })
+        .join()
     }
   })
 
@@ -482,13 +489,11 @@
     pagebreak(weak: true)
     counter(heading).update(0)
     counter("appendices").update(1)
-    set heading(
-      numbering: (..nums) => {
-        let vals = nums.pos()
-        let value = "ABCDEFGHIJ".at(vals.at(0) - 1)
-        return value + "." + nums.pos().slice(1).map(str).join(".")
-      }
-    )
+    set heading(numbering: (..nums) => {
+      let vals = nums.pos()
+      let value = "ABCDEFGHIJ".at(vals.at(0) - 1)
+      return value + "." + nums.pos().slice(1).map(str).join(".")
+    })
     appendix
   }
 }
@@ -527,7 +532,8 @@
     sidebar,
     dx: -30pt,
     dy: offset,
-    float: false)
+    float: false,
+  )
 }
 
 #let cite-color = rgb(0%, 8%, 45%)
@@ -555,7 +561,7 @@
       ix += 1
     } else {
       // Look-a-head for other refs.
-      let refs = (atom, )
+      let refs = (atom,)
       let jx = ix + 1
       while jx < atoms.len() {
         // If the next one content block is a reference then append reference

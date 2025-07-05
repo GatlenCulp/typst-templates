@@ -1,13 +1,24 @@
-#import "/icml.typ": (
-  icml2025, lemmify, vruler,
+#import "./icml.typ": (
+  icml2025,
+  lemmify,
+  vruler,
   // Constants and definitions.
   font,
   // Table rulers.
-  toprule, midrule, bottomrule,
+  toprule,
+  midrule,
+  bottomrule,
   // Theorem typesetting.
-  assumption, corollary, definition, lemma, proof, proposition, remark,
-  theorem)
-#import "/logo.typ": LaTeX, TeX
+  assumption,
+  corollary,
+  definition,
+  lemma,
+  proof,
+  proposition,
+  remark,
+  theorem,
+)
+#import "./logo.typ": LaTeX, TeX
 
 #let affls = (
   airi: ("AIRI", "Moscow", "Russia"),
@@ -16,14 +27,16 @@
     institution: "Skoltech",
     location: "Moscow",
     country: "Russia",
-    ),
+  ),
 )
 
 #let authors = (
-  (name: "Firstname1 Lastname1",
-   affl: ("skoltech"),
-   email: "author@example.org",
-   equal: true),
+  (
+    name: "Firstname1 Lastname1",
+    affl: "skoltech",
+    email: "author@example.org",
+    equal: true,
+  ),
   (name: "Firstname1 Lastname1", affl: ("airi", "skoltech"), equal: true),
 )
 
@@ -300,8 +313,8 @@ the flow of the paper. Indicate footnotes with a number in the text where the
 point is most relevant. Place the footnote in 9~point type at the bottom of the
 column in which it appears. Precede the first footnote in a column with a
 horizontal rule of 0.8~inches.#footnote[Multiple footnotes can appear in each
-column, in the same order as they appear in the text, but spread them across
-columns and pages if possible.]
+  column, in the same order as they appear in the text, but spread them across
+  columns and pages if possible.]
 
 == Figures
 
@@ -356,28 +369,22 @@ algorithm.sty and algorithmic.sty, which are supplied with this package.
   (strong[until ] + cond),
 )
 
-#figure(
-  kind: "algorithm",
-  supplement: [Algorithm],
-  caption: [Bubble Sort],
-  placement: top,
-  {
-    set table.cell(align: left)
-    algorithm({
-      import algorithmic: *
-      State[*Input:* data $x_i$, size $m$]
-      Until(cond: [_noChange_ is _true_], {
-        State[Initialize _noChange = true_.]
-        For(cond: [$i=1$ *to* $m-1$], {
-          If(cond: $x_i > x_(i + 1)$, {
-            State[Swap $x_i$ and $x_(i + 1)$]
-            State[_noChange = false_]
-          })
+#figure(kind: "algorithm", supplement: [Algorithm], caption: [Bubble Sort], placement: top, {
+  set table.cell(align: left)
+  algorithm({
+    import algorithmic: *
+    State[*Input:* data $x_i$, size $m$]
+    Until(cond: [_noChange_ is _true_], {
+      State[Initialize _noChange = true_.]
+      For(cond: [$i=1$ *to* $m-1$], {
+        If(cond: $x_i > x_(i + 1)$, {
+          State[Swap $x_i$ and $x_(i + 1)$]
+          State[_noChange = false_]
         })
       })
     })
-  }
-) <alg-example>
+  })
+}) <alg-example>
 
 == Tables
 
@@ -392,15 +399,15 @@ should be flush left.
   ([Data set], [Naive], [Flexible], [Better?]),
 )
 #let rows = (
-  ([Breast],    [95.9 ± 0.2], [96.7 ± 0.2], $sqrt(x)$),
+  ([Breast], [95.9 ± 0.2], [96.7 ± 0.2], $sqrt(x)$),
   ([Cleveland], [83.3 ± 0.6], [80.0 ± 0.6], $times$),
-  ([Glass 2],   [61.9 ± 1.4], [83.8 ± 0.7], $sqrt("")$),
-  ([Credit],    [74.8 ± 0.5], [78.3 ± 0.6], [ ]),
-  ([Horse],     [73.3 ± 0.9], [69.7 ± 1.0], $times$),
-  ([Meta],      [67.1 ± 0.6], [76.5 ± 0.5], $sqrt("")$),
-  ([Pima],      [75.1 ± 0.6], [44.9 ± 0.6], [ ]),
-  ([Vehicle],   [73.9 ± 0.5], [61.5 ± 0.4], $sqrt("")$),
-  ([Vehicle],   [73.9 ± 0.5], [61.5 ± 0.4], $sqrt("")$),
+  ([Glass 2], [61.9 ± 1.4], [83.8 ± 0.7], $sqrt("")$),
+  ([Credit], [74.8 ± 0.5], [78.3 ± 0.6], [ ]),
+  ([Horse], [73.3 ± 0.9], [69.7 ± 1.0], $times$),
+  ([Meta], [67.1 ± 0.6], [76.5 ± 0.5], $sqrt("")$),
+  ([Pima], [75.1 ± 0.6], [44.9 ± 0.6], [ ]),
+  ([Vehicle], [73.9 ± 0.5], [61.5 ± 0.4], $sqrt("")$),
+  ([Vehicle], [73.9 ± 0.5], [61.5 ± 0.4], $sqrt("")$),
 )
 
 #let data-frame = (
@@ -410,8 +417,10 @@ should be flush left.
 
 #let format-cell(ix, jx, content, aux) = {
   let inset = (
-    left: 0.6em, right: 0.6em,
-    top: 0.2em, bottom: 0.2em,
+    left: 0.6em,
+    right: 0.6em,
+    top: 0.2em,
+    bottom: 0.2em,
   )
   if ix == 0 {
     inset.top = 0.5em

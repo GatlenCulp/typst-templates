@@ -4,7 +4,7 @@
  * International Conference on Machine Learning (ICML) 2025.
  */
 
-#import "/icml2024.typ": icml2024
+#import "./icml2024.typ": icml2024
 
 #let public-notice = [
   _Proceedings of the 42#super[nd] International Conference on Machine
@@ -46,8 +46,16 @@
 ) = {
   aux.public-notice = public-notice
   show: icml2024.with(
-    title: title, authors: authors, keywords: keywords, date: date,
-    abstract: abstract, bibliography: bibliography, header: header,
-    appendix: appendix, accepted: accepted, aux: aux)
+    title: title,
+    authors: authors,
+    keywords: keywords,
+    date: date,
+    abstract: abstract,
+    bibliography: bibliography,
+    header: header,
+    appendix: appendix,
+    accepted: accepted,
+    aux: aux,
+  )
   body
 }
