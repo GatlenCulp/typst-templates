@@ -28,13 +28,14 @@
     location: "Moscow",
     country: "Russia",
   ),
+  mit: ("Massachusetts Institute of Technology",),
 )
 
 #let authors = (
   (
-    name: "Firstname1 Lastname1",
-    affl: "skoltech",
-    email: "author@example.org",
+    name: "Gatlen Culp",
+    affl: "mit",
+    email: "gculp@mit.edu",
     equal: true,
   ),
   (name: "Firstname1 Lastname1", affl: ("airi", "skoltech"), equal: true),
@@ -55,7 +56,7 @@
   bibliography: bibliography("main.bib"),
   header: [Submission and Formatting Instructions for ICML 2025],
   appendix: include "appendix.typ",
-  accepted: false,
+  accepted: none,
 )
 
 #show: lemmify // Theorems, propositions, definitions, etc.
